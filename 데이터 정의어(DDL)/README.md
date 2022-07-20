@@ -45,7 +45,7 @@ CREATE TABLE Student (
   studentid INTEGER, 
   studentname VARCHAR(20),
   studentage INTEGER,
-  adress VARCHAR(20)
+  adress VARCHAR(20),
   PRIMARY KEY(studentid)
     );
 ~~~
@@ -66,9 +66,9 @@ CREATE TABLE Student(
 
 ~~~html
 CREATE TABLE Student(
-  studentname VARCHAR(20), NOT NULL, 
+  studentname VARCHAR(20) NOT NULL, 
   studentage INTEGER, 
-  adress VARCHAR(20) UNIQUE
+  adress VARCHAR(20) UNIQUE,
   PRIMARY KEY ( studentname, studentage)
     );
 ~~~
@@ -76,9 +76,9 @@ CREATE TABLE Student(
 ~~~html
 CREATE TABLE Student(
   studentid INTEGER UNIQUE, //같은 값 존재 X
-  studentname VARCHAR(20), NOT NULL, NULL 가질 수 없음
-  studentage INTEGER, DEFAULT 8 CHECK( studentage >= 8), 값이 입력되지 않으면 기본 값 8 이고 최소 8 이상으로 설정한다.
-  adress VARCHAR(20)  NOT NULL
+  studentname VARCHAR(20) NOT NULL, // NULL 가질 수 없음
+  studentage INTEGER, DEFAULT 8 CHECK( studentage >= 8), //값이 입력되지 않으면 기본 값 8 이고 최소 8 이상으로 설정한다.
+  adress VARCHAR(20),  NOT NULL,
   PRIMARY KEY (studentid)
     );
 ~~~
@@ -93,7 +93,7 @@ studentid INTEGER,
 bookid INTEGER
 bookname VARCHAR(20),
 publisher VARCHAR(20), //출판사
-PRI
+
 );
 ~~~
 
@@ -120,5 +120,74 @@ FOREIGN KEY(studentid) REFERENCES student(studentid) ON DELETE CASCADE
 
 ### ALTER문
 
+* ALTER문은 생성된 테이블의 속성과 속성에 관한 제약을 변경하며, 기본키 및 외래키를 변경한다.
+
+~~~html
+ALTER TABLE 테이블 이름
+	[ADD 속성이름 데이터타입] 
+	[DROP COLUMN 속성이름]
+	[ALTER COLUMN 속성이름 데이터타입]
+	[ALTER COLUMN 속성이름 [NULL | NOT NULL]]
+	[ADD PRIMARY KEY(속성이름)]
+	[[ADD | DROP] 제약이름]
+~~~
+
+* ADD : 속성 추가
+* DROP : 속성 제거
+* MODIFY : 속성 변경
+* ADD <제약이름>, DROP <제약이름> : 제약사항을 추가하거나 삭제
+
+~~~html
+CREATE TABLE Student(
+  studentid INTEGER,
+  studentname VARCHAR(20),
+  studentage INTEGER,
+  adress VARCHAR(20)
+  );
+~~~
+
+*Student 테이블에 VARCHAR(13)의 자료형을 가진 isbn을 추가
+
+~~~html
+ALTER TABLE Student ADD isbn VARCHAR(13);
+~~~
+
+* isbn 의 데이터 타입 INTEGER로 변경
+
+~~~html
+ALTER TABLE Student MODIFY isbn INTEGER;
+~~~
+
+*  isbn 속성을 삭제
+
+~~~html
+ALTER TABLE Student DROP COLUMN isbn;
+~~~
 
 ### DROP문
+
+* 테이블을 삭제하는 명령어
+
+>주의 DROP문은 테이블의 구조와 데이터를 모두 삭제하므로 사용에 주의해야함
+
+~~~html
+DROP TABLE 테이블이름
+~~~
+
+~~~html
+DROP TABLE Student; 
+//Error Code: 3730. Cannot drop table 'student' referenced by a foreign key constraint 'shcoollibrary_ibfk_1' on table 'shcoollibrary'.	0.000 sec
+~~~
+
+> 삭제하려는 테이블의 기본키를 다른 테이블에서 참조하고 있다면 삭제가 거절된다. 테이블을 삭제하기 위해서는 참조하고 있는 테이블을 먼저 삭제해야함
+
+
+~~~html
+DROP TABLE ShcoolLibrary;
+~~~
+
+* 참조하고 있는 테이블 삭제 후
+
+~~~html
+DROP TABLE Student; //삭제완료
+~~~
