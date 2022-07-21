@@ -191,3 +191,9 @@ DROP TABLE ShcoolLibrary;
 ~~~html
 DROP TABLE Student; //삭제완료
 ~~~
+
+* 컬럼 삭제 
+
+~~~html
+ALTER TABLE 테이블명 DROP `컬럼명`;
+~~~
