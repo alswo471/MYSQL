@@ -4,6 +4,7 @@
 
 ~~~sql
 select * from 학생 where 주소 like binary '%과천';
+~~~
 
 - 소속학과가 컴퓨터로 끝나고 주소가 분당으로 끝나는 학생을 출력
 
